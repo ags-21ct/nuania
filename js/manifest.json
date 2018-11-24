@@ -1,0 +1,40 @@
+{
+    "name": "LIKECoin",
+    "short_name": "LIKECoin",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#fff",
+    "description": "เหรียญไลค์",
+    "icons": [
+        {
+            "src": "https://s3-ap-southeast-1.amazonaws.com/storage-pkg/icon/icon153699379048x48.png",
+            "sizes": "48x48",
+            "type": "image/png"
+        },
+        {
+            "src": "https://s3-ap-southeast-1.amazonaws.com/storage-pkg/icon/icon153699379072x72.png ",
+            "sizes": "72x72",
+            "type": "image/png"
+        },
+        {
+            "src": "https://s3-ap-southeast-1.amazonaws.com/storage-pkg/icon/icon153699379096x96.png ",
+            "sizes": "96x96",
+            "type": "image/png"
+        },
+        {
+            "src": "https://s3-ap-southeast-1.amazonaws.com/storage-pkg/icon/icon1536993790144x144.png ",
+            "sizes": "144x144",
+            "type": "image/png"
+        },
+        {
+            "src": "https://s3-ap-southeast-1.amazonaws.com/storage-pkg/icon/icon1536993790168x168.png ",
+            "sizes": "168x168",
+            "type": "image/png"
+        },
+        {
+            "src": "https://s3-ap-southeast-1.amazonaws.com/storage-pkg/icon/icon1536993790192x192.png ",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ]
+}
