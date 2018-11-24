@@ -38,13 +38,167 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/base/minified/jquery-ui.min.css"
         type="text/css" />
 
-    
+
 </head>
 
 
 <body>
-   
+    <div id="overflow" style="display:none;">
+        <button id="x">
+            X
+        </button>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">
+            <img src="https://s3-ap-southeast-1.amazonaws.com/storage-pkg/icon/icon1536993790144x144.png" width="30"
+                height="30" class="d-inline-block align-top" alt=""> GTC
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+        </div>
+    </nav>
+    <div class="container">
+        <div class="card text-center">
+            <div class="card-header">
+                <ul class="nav nav-pills card-header-pills">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="pill" href="#transfer">โอน</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="pill" href="#reciever">รับ</a>
+                    </li>
+
+                </ul>
+
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane container active" id="transfer">
+
+                    <div class="card-body" style="padding:0 !important;">
+
+                        <!-- สวัสดี -->
+
+
+                        <!-- <div id="addr"></div> -->
+                        <br>
+                        <form>
+
+                            <div class="form-group row">
+                                <!-- <label for="inputEmail3" class="col-2 col-form-label">ส่งถึง</label> -->
+                                <div class="col-10 col-sm-10">
+                                    <input type="text" class="form-control" id="address" name="address" placeholder="เลขกระเป๋าของผู้รับ"
+                                        required>
+                                </div>
+                                <div class="col-1 col-sm-2" id="clearBtn" hidden>
+                                    <button type="button" class="btn btn-danger" onClick="clearBtn();">X</button>
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <!-- <label for="inputPassword3" class="col-2 col-form-label">จำนวน</label> -->
+                                <div class="col-10" class="containers">
+                                    <input type="number" class="form-control" id="value" name="value" required
+                                        placeholder="จำนวนที่จะส่ง">
+                                </div>
+                            </div>
+
+                            <div id="showPending" align="center"></div>
+                            <div id="pending"></div>
+                            <button id="sendButton" style="width:100px;" type="button" class="btn btn-primary" onclick="sendToken()">ส่ง</button>
+                            <button id="sendButton" style="width:100px;" type="button" class="btn btn-primary" onclick="checkBalance()">เช็ค</button>
+                        </form>
+
+                    </div>
+                </div>
+                <div class="tab-pane container" id="reciever">
+                    <div class="card-body">
+                        <div id="qrcode" align="center"></div>
+                        <script type="text/javascript">
+                            new QRCode(document.getElementById("qrcode"), "xxxx");
+                        </script>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <!-- modal -->
+        <div class="modal fade modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+
+                </div>
+            </div>
+        </div>
 
 </body>
+
+<script>
+      window.addEventListener("load", function () {
+          var web3 = window.web3;
+            // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+            if (typeof web3 !== "undefined") {
+                // Use Mist/MetaMask's provider
+                web3 = new Web3(web3.currentProvider)
+            } else {
+                console.log("No web3? You should consider trying MetaMask!");
+                // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
+                window.web3 = new Web3(
+                    new Web3.providers.HttpProvider("https://localhost:8545")
+                );
+            }
+
+console.log(window.web3);
+            // APP >
+
+            web3.eth.getAccounts(function (error, accounts) {
+                if (!error) {
+                    web3.eth.getBalance(accounts[0], function (error, balance) {
+                        if (!error) {
+                            console.log(
+                                "Your account: " +
+                                accounts[0] +
+                                " has a balance of: " +
+                                balance.toNumber() / 1000000000000000000 +
+                                "Ether"
+                            );
+                        } else {
+                            console.error(error);
+                        }
+                    });
+                } else {
+                    console.error(error);
+                }
+            });
+        });
+
+
+
+    var abi = [{ "constant": true, "inputs": [], "name": "totalSupply", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }], "name": "balanceOf", "outputs": [{ "name": "balance", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "_to", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "transfer", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "from", "type": "address" }, { "indexed": true, "name": "to", "type": "address" }, { "indexed": false, "name": "value", "type": "uint256" }], "name": "Transfer", "type": "event" }];
+    var code = '608060405234801561001057600080fd5b50610396806100206000396000f300608060405260043610610057576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806318160ddd1461005c57806370a0823114610087578063a9059cbb146100de575b600080fd5b34801561006857600080fd5b5061007161012b565b6040518082815260200191505060405180910390f35b34801561009357600080fd5b506100c8600480360381019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610131565b6040518082815260200191505060405180910390f35b3480156100ea57600080fd5b50610129600480360381019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291908035906020019092919050505061017a565b005b60005481565b6000600160008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020549050919050565b6040600481016000369050101561019057600080fd5b6101e282600160003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000205461032490919063ffffffff16565b600160003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000208190555061027782600160008673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000205461033d90919063ffffffff16565b600160008573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020819055508273ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff167fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef846040518082815260200191505060405180910390a3505050565b60006103328383111561035b565b818303905092915050565b60008082840190506103518482101561035b565b8091505092915050565b80151561036757600080fd5b505600a165627a7a72305820657abb7ac4bdbd9bd58c8a0d19d5d0c80bf558ba69a2283cca7c9975de38031f0029';
+    var MyContract = new web3.eth.Contract(abi, '0x21589c3bbbcb5841d3e34b91eef8eb30a77a6fa9');
+
+
+
+
+    function sendToken() {
+        var address = $('#address').val();
+        var value = $('#value').val();
+        MyContract.methods.transfer(address, value).call({}, function (error, result) {
+
+        });
+    }
+   
+</script>
 
 </html>
